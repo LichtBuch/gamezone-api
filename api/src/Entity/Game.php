@@ -42,9 +42,13 @@ class Game
     #[ORM\ManyToMany(targetEntity: Category::class, mappedBy: 'games')]
     private Collection $categories;
 
+    #[ORM\OneToMany(mappedBy: 'game', targetEntity: Image::class, orphanRemoval: true)]
+    private Collection $images;
+
     public function __construct()
     {
         $this->categories = new ArrayCollection();
+        $this->images = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -158,6 +162,36 @@ class Game
     {
         if ($this->categories->removeElement($category)) {
             $category->removeGame($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Image>
+     */
+    public function getImages(): Collection
+    {
+        return $this->images;
+    }
+
+    public function addImage(Image $image): self
+    {
+        if (!$this->images->contains($image)) {
+            $this->images->add($image);
+            $image->setGame($this);
+        }
+
+        return $this;
+    }
+
+    public function removeImage(Image $image): self
+    {
+        if ($this->images->removeElement($image)) {
+            // set the owning side to null (unless already changed)
+            if ($image->getGame() === $this) {
+                $image->setGame(null);
+            }
         }
 
         return $this;
