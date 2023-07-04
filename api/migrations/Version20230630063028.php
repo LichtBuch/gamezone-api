@@ -20,10 +20,8 @@ final class Version20230630063028 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('DROP SEQUENCE greeting_id_seq CASCADE');
         $this->addSql('CREATE SEQUENCE game_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
         $this->addSql('CREATE TABLE game (id INT NOT NULL, title VARCHAR(255) NOT NULL, description TEXT DEFAULT NULL, release_date DATE DEFAULT NULL, price INT DEFAULT NULL, review SMALLINT DEFAULT NULL, wishlisted BOOLEAN NOT NULL, deleted BOOLEAN NOT NULL, PRIMARY KEY(id))');
-        $this->addSql('DROP TABLE greeting');
     }
 
     public function down(Schema $schema): void
@@ -31,8 +29,6 @@ final class Version20230630063028 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
         $this->addSql('DROP SEQUENCE game_id_seq CASCADE');
-        $this->addSql('CREATE SEQUENCE greeting_id_seq INCREMENT BY 1 MINVALUE 1 START 1');
-        $this->addSql('CREATE TABLE greeting (id INT NOT NULL, name VARCHAR(255) NOT NULL, PRIMARY KEY(id))');
         $this->addSql('DROP TABLE game');
     }
 }
