@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
+use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -14,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ApiResource(
     security: 'is_granted("ROLE_USER")'
 )]
+#[ApiFilter(BooleanFilter::class, properties: ['deleted', 'wishlisted'])]
 class Game
 {
     #[ORM\Id]
