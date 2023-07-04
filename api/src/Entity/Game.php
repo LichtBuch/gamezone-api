@@ -10,7 +10,9 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: GameRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    security: 'is_granted("ROLE_USER")'
+)]
 class Game
 {
     #[ORM\Id]
@@ -44,6 +46,10 @@ class Game
 
     #[ORM\OneToMany(mappedBy: 'game', targetEntity: Image::class, orphanRemoval: true)]
     private Collection $images;
+
+    #[ORM\ManyToOne(inversedBy: 'games')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $owner = null;
 
     public function __construct()
     {
@@ -193,6 +199,18 @@ class Game
                 $image->setGame(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getOwner(): ?User
+    {
+        return $this->owner;
+    }
+
+    public function setOwner(?User $owner): self
+    {
+        $this->owner = $owner;
 
         return $this;
     }
