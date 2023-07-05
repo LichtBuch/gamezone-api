@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Doctrine\IDeleted;
 use App\Doctrine\IOwner;
 use App\Repository\GameRepository;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -18,7 +19,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     security: 'is_granted("ROLE_USER")'
 )]
 #[ApiFilter(BooleanFilter::class, properties: ['deleted', 'wishlisted'])]
-class Game implements IOwner
+class Game implements IOwner, IDeleted
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
